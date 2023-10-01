@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace BookShoppingCartMvcUI.Controllers
 {
@@ -32,8 +33,16 @@ namespace BookShoppingCartMvcUI.Controllers
         }
         public async Task<IActionResult> GetTotalItemInCart()
         {
-            int cartItem=await _cartRepo.GetCartItemCount();
+            int cartItem = await _cartRepo.GetCartItemCount();
             return Ok(cartItem);
+        }
+
+        public async Task<IActionResult> Checkout()
+        {
+            bool isCheckOut = await _cartRepo.DoCheckOut();
+            if (!isCheckOut)
+                throw new Exception("Something happen in server side");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
