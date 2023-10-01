@@ -9,12 +9,12 @@ namespace BookShoppingCartMvcUI.Repositories
         private readonly UserManager<IdentityUser> _userManager;
         private readonly HttpContextAccessor _httpContextAccessor;
 
-        public CartRepository(ApplicationDbContext db, IHttpContextAccessor httpcontextAccessor,
+        public CartRepository(ApplicationDbContext db, HttpContextAccessor httpContextAccessor,
             UserManager<IdentityUser> userManager)
         {
             _db = db;
             _userManager = userManager;
-            _httpcontextAccessor = httpcontextAccessor;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<int> AddItem(int bookId, int qty)
