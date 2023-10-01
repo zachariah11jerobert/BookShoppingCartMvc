@@ -10,7 +10,7 @@ namespace BookShoppingCartMvcUI.Models
 
         [Required]
         [MaxLength(40)]
-        public string ? BookName { get; set; }
+        public string? BookName { get; set; }
 
         [Required]
         [MaxLength(40)]
@@ -19,11 +19,10 @@ namespace BookShoppingCartMvcUI.Models
         [Required]
         public double Price { get; set; }
 
-        public string ? Image { get; set; }
+        public string? Image { get; set; }
 
         [Required]
         public int? GenreId { get; set; }
-
 
         public Genre Genre { get; set; }
         public List<OrderDetail> OrderDetail { get; set; }

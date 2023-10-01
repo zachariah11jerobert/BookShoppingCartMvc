@@ -7,27 +7,27 @@
     <form asp-action="Index" class="row row-cols-lg-auto g-3 align-items-center">
         <div class="col-12">
             <label class="visually-hidden" for="genreId">Genres</label>
-            <select class="form-select" id="genreId" name="genreId"
-                <option selected>Choose...</option>
+            <select class="form-select" id="genreId" name="genreId">
+                <option selected>Genre</option>
                 @foreach(var genre in Model.Genres)
                 {
-                        <option value="@genre.Id">@genre.GenreName</option>
+                        <option selected="@(genre.Id == Model.GenreId)" value="@genre.Id">@genre.GenreName</option>
                 }
               
             </select>
         </div>
 
         <div class="col-12">
-            <label class="visually-hidden" for="inlineFormInputGroupUsername">Search by title</label>
+            <label class="visually-hidden" for="sterm">Search by title</label>
             <div class="input-group">
                 <div class="input-group-text"></div>
-                <input type="text" class="form-control" id="sterm" name="sterm" placeholder="Search by Title" />
+                <input type="text" class="form-control" value="@Model.STerm" id="sterm" name="sterm" placeholder="Search by Title" />
             </div>
         </div>
 
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Search</button>
-            <button type="reset" class="btn btn-dark">Reset</button>
+            <a href="/Home/Index" class="btn btn-dark">Reset</a>
         </div>
     </form>
 </div>
@@ -38,19 +38,19 @@
         <div class="card mx-2 mb-4" style="width: 11rem;">
             @if (string.IsNullOrEmpty(book.Image))
             {
-                <img style="width:100%;heigth:180px;" src="/images/NoImage.png" class="card-img-top" alt="..." />
+                <img style="width:100%;heigth:300px;" src="/images/NoImage.png" class="card-img-top" alt="..." />
             }
             else
             {
-                <img src="/images/@book.Image" class="card-img-top" alt="..." />
+                <img style="width:100%;heigth:300px;" src="/images/@book.Image" class="card-img-top" alt="..." />
             }
             <div class="card-body">
                 <h5 class="card-title">@book .BookName</h5>
                 <p class="card-text">
-                    <b>Genre:@book.GenreName </b>
-                    <b>Author:@book.AuthorName </b>
-                    <b>Price:@book.Price
+                    Genre:@book.GenreName      
                 </p>
+                <p>Author:@book.AuthorName </p>
+                <p>Price:@book.Price</p>
                 <a href="#" class="btn btn-primary">Add to cart</a>
             </div>
         </div>
