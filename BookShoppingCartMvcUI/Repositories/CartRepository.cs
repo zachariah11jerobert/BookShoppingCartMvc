@@ -9,12 +9,12 @@ namespace BookShoppingCartMvcUI.Repositories
         private readonly UserManager<IdentityUser> _userManager;
         private readonly HttpContextAccessor _httpContextAccessor;
 
-        public CartRepository(ApplicationDbContext db, IHttpContextAccessor _httpcontextAccessor,
-            UserManager<IdentityUser> UserManager)
+        public CartRepository(ApplicationDbContext db, IHttpContextAccessor httpcontextAccessor,
+            UserManager<IdentityUser> userManager)
         {
             _db = db;
-            _userManager = UserManager;
-            _httpcontextAccessor = _httpcontextAccessor;
+            _userManager = userManager;
+            _httpcontextAccessor = httpcontextAccessor;
         }
 
         public async Task<int> AddItem(int bookId, int qty)
@@ -54,9 +54,11 @@ namespace BookShoppingCartMvcUI.Repositories
                 }
                 _db.SaveChanges();
                 transaction.Commit();
+                return true;
             }
             catch (Exception ex)
             {
+                return false;
             }
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
@@ -66,9 +68,10 @@ namespace BookShoppingCartMvcUI.Repositories
         public async Task<int> RemoveItem(int bookId)
         {
             //using var transaction = _db.Database.BeginTransaction();
-            string userId = GetUserId();
+            
             try
             {
+                string userId = GetUserId();
                 if (string.IsNullOrEmpty(userId))
                     throw new Exception("user is not logged-in");
                 var cart = await GetCart(userId);
@@ -86,9 +89,11 @@ namespace BookShoppingCartMvcUI.Repositories
                 else
                     cartItem.Quantity = cartItem.Quantity - 1;
                 _db.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
+                return false;
             }
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
@@ -135,10 +140,7 @@ namespace BookShoppingCartMvcUI.Repositories
 
       
 
-        Task<int> ICartRepository.GetCart(string userId)
-        {
-            throw new NotImplementedException();
-        }
+      
     }
 
 }
