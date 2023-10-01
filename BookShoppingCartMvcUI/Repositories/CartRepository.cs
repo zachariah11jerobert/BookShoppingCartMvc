@@ -54,11 +54,10 @@ namespace BookShoppingCartMvcUI.Repositories
                 }
                 _db.SaveChanges();
                 transaction.Commit();
-                return true;
             }
             catch (Exception ex)
             {
-                return false;
+
             }
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
@@ -68,37 +67,35 @@ namespace BookShoppingCartMvcUI.Repositories
         public async Task<int> RemoveItem(int bookId)
         {
             //using var transaction = _db.Database.BeginTransaction();
-            
+            string userId = GetUserId();
             try
             {
-                string userId = GetUserId();
+
                 if (string.IsNullOrEmpty(userId))
                     throw new Exception("user is not logged-in");
                 var cart = await GetCart(userId);
                 if (cart is null)
-                {
                     throw new Exception("Invalid cart");
-                }
                 //cart detail section
                 var cartItem = _db.CartDetails
                                     .FirstOrDefault(a => a.ShoppingCartId == cart.Id && a.BookId == bookId);
-                if (cartItem is not null)
+                if (cartItem is null)
                     throw new Exception("Not item in cart");
                 else if (cartItem.Quantity == 1)
                     _db.CartDetails.Remove(cartItem);
                 else
                     cartItem.Quantity = cartItem.Quantity - 1;
                 _db.SaveChanges();
-                return true;
+
             }
             catch (Exception ex)
             {
-                return false;
+
             }
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
         }
-        public async Task<IEnumerable<ShoppingCart>> GetUserCart()
+        public async Task<ShoppingCart> GetUserCart()
         {
             var userId = GetUserId();
             if (userId == null)
@@ -107,11 +104,11 @@ namespace BookShoppingCartMvcUI.Repositories
                                    .Include(a => a.CartDetails)
                                    .ThenInclude(a => a.Book)
                                    .ThenInclude(a => a.Genre)
-                                   .Where(a => a.UserId == userId).ToListAsync();
+                                   .Where(a => a.UserId == userId).FirstOrDefaultAsync();
 
             return shoppingCart;
         }
-        private async Task<ShoppingCart> GetCart(string userId)
+        public async Task<ShoppingCart> GetCart(string userId)
         {
             var cart = await _db.ShoppingCart.FirstOrDefaultAsync(x => x.UserId == userId);
             return cart;
@@ -138,9 +135,9 @@ namespace BookShoppingCartMvcUI.Repositories
             return userId;
         }
 
-      
 
-      
+
+
     }
 
 }
