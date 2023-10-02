@@ -6,9 +6,9 @@
 <div style="width:90%;margin:auto" class="mt-2">
     @if (Model != null && Model.CartDetails != null && Model.CartDetails.Count > 0)
     {
-        <h3>My Cart</h3>
+        <h5>My Cart</h5>
 
-        <table class="table table-bordered">
+        <table class="table table-striped">
             <tr>
                 <th>Book</th>
                 <th>Image</th>
@@ -16,6 +16,7 @@
                 <th>Unit Price(INR)</th>
                 <th>Qty</th>
                 <th>Total Price</th>
+                <th>Action</th>
             </tr>
 
             @foreach (var item in Model.CartDetails)
@@ -23,7 +24,7 @@
                 <tr>
                     <td>@item.Book.BookName</td>
                     <td>
-                        @if (!string.IsNullOrEmpty(item.Book.Image))
+                        @if (string.IsNullOrEmpty(item.Book.Image))
                         {
                             <img src="/images/NoImage.png" style="width:80px;height:100px;" />
                         }
