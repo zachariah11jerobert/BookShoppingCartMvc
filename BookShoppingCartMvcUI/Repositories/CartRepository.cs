@@ -51,7 +51,7 @@ namespace BookShoppingCartMvcUI.Repositories
                         BookId = bookId,
                         ShoppingCartId = cart.Id,
                         Quantity = qty,
-                        UnitPrice=book.Price
+                        UnitPrice=book.Price // it is a new line after update
                     };
                     _db.CartDetails.Add(cartItem);
                 }
@@ -98,6 +98,7 @@ namespace BookShoppingCartMvcUI.Repositories
             var cartItemCount = await GetCartItemCount(userId);
             return cartItemCount;
         }
+
         public async Task<ShoppingCart> GetUserCart()
         {
             var userId = GetUserId();
@@ -111,6 +112,7 @@ namespace BookShoppingCartMvcUI.Repositories
 
             return shoppingCart;
         }
+
         public async Task<ShoppingCart> GetCart(string userId)
         {
             var cart = await _db.ShoppingCart.FirstOrDefaultAsync(x => x.UserId == userId);
@@ -131,12 +133,14 @@ namespace BookShoppingCartMvcUI.Repositories
             return data.Count;
         }
 
-        public async Task<bool> DoCheckOut()
+        public async Task<bool> DoCheckout()
         {
             using var transaction = _db.Database.BeginTransaction();
 
             try
             {
+                // logic
+                // move data from cartDetail to order detail then we will remove cart detail
                 var userId = GetUserId();
                 if (string.IsNullOrEmpty(userId))
                     throw new Exception("User is not logged-in");

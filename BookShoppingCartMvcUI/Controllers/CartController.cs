@@ -39,8 +39,8 @@ namespace BookShoppingCartMvcUI.Controllers
 
         public async Task<IActionResult> Checkout()
         {
-            bool isCheckOut = await _cartRepo.DoCheckOut();
-            if (!isCheckOut)
+            bool isCheckedOut = await _cartRepo.DoCheckout();
+            if (!isCheckedOut)
                 throw new Exception("Something happen in server side");
             return RedirectToAction("Index", "Home");
         }
